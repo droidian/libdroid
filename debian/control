@@ -1,0 +1,76 @@
+Source: libdroid
+Section: libs
+Priority: optional
+Maintainer: Eugenio "g7" Paolantonio <eugenio@droidian.org>
+Build-Depends: debhelper-compat (= 13),
+               meson,
+               libglib2.0-dev,
+               libgirepository-2.0-dev,
+               libgirepository-1.0-dev,
+               libgbinder-dev,
+               gir1.2-glib-2.0-dev,
+Standards-Version: 4.6.2
+Homepage: https://github.com/droidian/libdroid.git
+Rules-Requires-Root: no
+
+Package: libdroid-0-0
+Architecture: any
+Multi-Arch: same
+Depends: libdroid-common (= ${binary:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends},
+Description: Library to ease interaction with Android HALs
+ libdroid is a library that provides some helpers to
+ use binderized Android HALs.
+
+Package: libdroid-common
+Architecture: all
+Multi-Arch: foreign
+Depends: ${misc:Depends},
+Description: Library to ease interaction with Android HALs - common files
+ libdroid is a library that provides some helpers to
+ use binderized Android HALs.
+ .
+ This packages contains common files used by libdroid.
+
+Package: libdroid-tools
+Architecture: any
+Section: libdevel
+Multi-Arch: same
+Depends: libdroid-0-0 (= ${binary:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends},
+Description: Library to ease interaction with Android HALs - tools
+ libdroid is a library that provides some helpers to
+ use binderized Android HALs.
+ .
+ This package provides example tools using libdroid.
+
+Package: libdroid-dev
+Architecture: any
+Section: libdevel
+Multi-Arch: same
+Depends: libdroid-0-0 (= ${binary:Version}),
+         gir1.2-droid-0 (= ${binary:Version}),
+         libglib2.0-dev,
+         libgbinder-dev,
+         ${misc:Depends},
+Description: Library to ease interaction with Android HALs - development headers
+ libdroid is a library that provides some helpers to
+ use binderized Android HALs.
+ .
+ This package provides development headers for libdroid.
+
+Package: gir1.2-droid-0
+Architecture: any
+Section: introspection
+Multi-Arch: same
+Depends: libdroid-0-0 (= ${binary:Version}),
+         ${misc:Depends},
+         ${gir:Depends},
+Description: Library to ease interaction with Android HALs - gobject introspection data
+ libdroid is a library that provides some helpers to
+ use binderized Android HALs.
+ .
+ This package provides gobject introspection data for language
+ bindings.

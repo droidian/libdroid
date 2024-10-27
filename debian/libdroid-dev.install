@@ -1,0 +1,4 @@
+/usr/include/libdroid/*
+/usr/lib/*/pkgconfig/*
+/usr/share/gir-1.0/*
+/usr/lib/*/libdroid-*.so

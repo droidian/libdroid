@@ -1,0 +1,6 @@
+LIBDROID_0_0 {
+	global:
+		droid_*;
+	local:
+		*;
+};

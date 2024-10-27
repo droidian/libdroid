@@ -1,0 +1,14 @@
+<schemalist>
+  <schema id="eu.medesimo.Libdroid" path="/eu/medesimo/Libdroid/">
+
+    <key name="backlight-level" type="u">
+      <default>255</default>
+      <summary>Current backlight level</summary>
+      <description>
+        Current backlight level. This is only used as a shared storage, and
+        changing this setting will not do anything.
+      </description>
+    </key>
+
+  </schema>
+</schemalist>

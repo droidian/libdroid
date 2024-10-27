@@ -1,0 +1,17 @@
+libdroid-0.so.0 libdroid-0-0 #MINVER#
+* Build-Depends-Package: libdroid-dev
+ LIBDROID_0_0@LIBDROID_0_0 0.0.1
+ droid_leds_backend_aidl_get_type@LIBDROID_0_0 0.0.1
+ droid_leds_backend_aidl_new@LIBDROID_0_0 0.0.1
+ droid_leds_backend_get_type@LIBDROID_0_0 0.0.1
+ droid_leds_backend_hidl_get_type@LIBDROID_0_0 0.0.1
+ droid_leds_backend_hidl_new@LIBDROID_0_0 0.0.1
+ droid_leds_backend_is_supported@LIBDROID_0_0 0.0.1
+ droid_leds_backend_set@LIBDROID_0_0 0.0.1
+ droid_leds_clear_notification@LIBDROID_0_0 0.0.1
+ droid_leds_get_backlight@LIBDROID_0_0 0.0.1
+ droid_leds_get_type@LIBDROID_0_0 0.0.1
+ droid_leds_new@LIBDROID_0_0 0.0.1
+ droid_leds_set_backlight@LIBDROID_0_0 0.0.1
+ droid_leds_set_notification@LIBDROID_0_0 0.0.1
+ droid_settings_get_default@LIBDROID_0_0 0.0.1
