@@ -135,6 +135,23 @@ droid_leds_clear_notification (DroidLeds *self)
 }
 
 
+gboolean
+droid_leds_is_kind_supported (DroidLeds *self,
+                              DroidLedsKind kind)
+{
+  g_return_val_if_fail (DROID_IS_LEDS (self), FALSE);
+
+  switch (kind)
+    {
+    case DROID_LEDS_KIND_BACKLIGHT:
+      return self->backlight_supported;
+    case DROID_LEDS_KIND_NOTIFICATION:
+      return self->notifications_supported;
+    default:
+      return FALSE;
+    }
+}
+
 static DroidLedsBackend *
 droid_leds_create_backend (void)
 {

@@ -46,6 +46,11 @@ G_BEGIN_DECLS
 #define DROID_TYPE_LEDS droid_leds_get_type ()
 G_DECLARE_FINAL_TYPE (DroidLeds, droid_leds, DROID, LEDS, GObject)
 
+typedef enum _DroidLedsKind {
+  DROID_LEDS_KIND_BACKLIGHT = 0,
+  DROID_LEDS_KIND_NOTIFICATION,
+} DroidLedsKind;
+
 DroidLeds *droid_leds_new                (void);
 gboolean   droid_leds_set_backlight      (DroidLeds *self,
                                           guint      level,
@@ -56,5 +61,7 @@ gboolean   droid_leds_set_notification   (DroidLeds *self,
                                           int32_t    flash_on_ms,
                                           int32_t    flash_off_ms);
 gboolean   droid_leds_clear_notification (DroidLeds *self);
+gboolean   droid_leds_is_kind_supported  (DroidLeds *self,
+                                          DroidLedsKind kind);
 
 G_END_DECLS
