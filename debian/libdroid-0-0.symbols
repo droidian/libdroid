@@ -11,6 +11,7 @@ libdroid-0.so.0 libdroid-0-0 #MINVER#
  droid_leds_clear_notification@LIBDROID_0_0 0.0.1
  droid_leds_get_backlight@LIBDROID_0_0 0.0.1
  droid_leds_get_type@LIBDROID_0_0 0.0.1
+ droid_leds_is_kind_supported@LIBDROID_0_0 0.0.2
  droid_leds_new@LIBDROID_0_0 0.0.1
  droid_leds_set_backlight@LIBDROID_0_0 0.0.1
  droid_leds_set_notification@LIBDROID_0_0 0.0.1
