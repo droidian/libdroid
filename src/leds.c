@@ -60,8 +60,9 @@
 #include "leds-backend-aidl.h"
 #include "leds-backend-hidl.h"
 
-#define BACKLIGHT_MAX                     255
-#define LIBDROID_LEDS_BACKLIGHT_LEVEL_KEY "backlight-level"
+#define BACKLIGHT_MAX                             255
+#define LIBDROID_LEDS_BACKLIGHT_LEVEL_KEY         "backlight-level"
+#define LIBDROID_LEDS_BACKLIGHT_MAX_ALTERNATE_KEY "backlight-max-alternate"
 
 struct _DroidLeds
 {
@@ -69,6 +70,7 @@ struct _DroidLeds
 
   DroidLedsBackend *backend;
   GSettings        *settings;
+  guint             backlight_max_alternate;
   gboolean          backlight_supported;
   gboolean          notifications_supported;
 };
@@ -87,7 +89,11 @@ droid_leds_set_backlight (DroidLeds *self,
     return FALSE;
 
   level = MIN(level, BACKLIGHT_MAX);
-  brightness = (0xff << 24) + (level << 16) + (level << 8) + level;
+  if (self->backlight_max_alternate > 0)
+    /* Use the alternate way (pass the value directly) */
+    brightness = level * self->backlight_max_alternate / BACKLIGHT_MAX;
+  else
+    brightness = (0xff << 24) + (level << 16) + (level << 8) + level;
 
   if (!droid_leds_backend_set (self->backend, brightness, LIGHT_TYPE_BACKLIGHT,
     FLASH_TYPE_NONE, BRIGHTNESS_MODE_USER, 0, 0))
@@ -179,6 +185,9 @@ droid_leds_constructed (GObject *obj)
   G_OBJECT_CLASS (droid_leds_parent_class)->constructed (obj);
 
   self->settings = droid_settings_get_default ();
+
+  self->backlight_max_alternate = g_settings_get_uint (self->settings,
+    LIBDROID_LEDS_BACKLIGHT_MAX_ALTERNATE_KEY);
 
   self->backend = droid_leds_create_backend ();
 

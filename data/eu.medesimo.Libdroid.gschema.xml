@@ -10,5 +10,16 @@
       </description>
     </key>
 
+    <key name="backlight-max-alternate" type="u">
+      <default>0</default>
+      <summary>Alternate way to specify max brightness</summary>
+      <description>
+        Some buggy HALs expect use a different way to set the brightness,
+        and they do it by passing the actual value directly.
+
+        Keep this at 0 (disabled) unless you know what you're doing.
+      </description>
+    </key>
+
   </schema>
 </schemalist>
