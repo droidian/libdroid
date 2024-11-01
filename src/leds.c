@@ -90,7 +90,7 @@ droid_leds_set_backlight (DroidLeds *self,
   brightness = (0xff << 24) + (level << 16) + (level << 8) + level;
 
   if (!droid_leds_backend_set (self->backend, brightness, LIGHT_TYPE_BACKLIGHT,
-    FLASH_TYPE_HARDWARE, BRIGHTNESS_MODE_USER, 0, 0))
+    FLASH_TYPE_NONE, BRIGHTNESS_MODE_USER, 0, 0))
     return FALSE;
 
   if (save)
