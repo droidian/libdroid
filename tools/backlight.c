@@ -39,6 +39,7 @@
 #include <libdroid/libdroid.h>
 
 #include <glib.h>
+#include <stdio.h>
 
 int
 main (int argc, char** argv)
@@ -46,6 +47,7 @@ main (int argc, char** argv)
   gint level = 255;
   gboolean save = FALSE;
   gboolean restore = FALSE;
+  gboolean info = FALSE;
   g_autoptr (GError) err = NULL;
   g_autoptr (GOptionContext) context = NULL;
   g_autoptr (DroidLeds) leds = NULL;
@@ -62,6 +64,10 @@ main (int argc, char** argv)
       "restore", 'r', G_OPTION_FLAG_NONE, G_OPTION_ARG_NONE, &restore,
       "Whether to restore the backlight level", NULL,
     },
+    {
+      "info", 'i', G_OPTION_FLAG_NONE, G_OPTION_ARG_NONE, &info,
+      "Show info on supported lights, and exit", NULL,
+    },
     {NULL},
   };
 
@@ -77,7 +83,18 @@ main (int argc, char** argv)
 
   leds = droid_leds_new ();
 
-  if (restore)
+  if (info)
+    {
+      printf ("Backlight supported: %d\n"
+              "Backlight stored level: %d\n"
+              "Notification light supported: %d\n",
+              droid_leds_is_kind_supported (leds, DROID_LEDS_KIND_BACKLIGHT),
+              droid_leds_get_backlight (leds),
+              droid_leds_is_kind_supported (leds, DROID_LEDS_KIND_NOTIFICATION));
+
+      return EXIT_SUCCESS;
+    }
+  else if (restore)
     {
       save = FALSE;
       level = droid_leds_get_backlight (leds);
