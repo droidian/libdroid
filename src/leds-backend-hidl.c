@@ -60,7 +60,8 @@
 #define BINDER_LIGHT_DEFAULT_HIDL_DEVICE "/dev/hwbinder"
 
 #define BINDER_LIGHT_HIDL_IFACE(v) "android.hardware.light@" v "::ILight"
-#define BINDER_LIGHT_HIDL_SLOT "default"
+#define BINDER_LIGHT_HIDL_SLOT_DEFAULT "default"
+#define BINDER_LIGHT_HIDL_SLOT_LIBDROID "libdroid"
 
 #define BINDER_LIGHT_HIDL_2_0_IFACE BINDER_LIGHT_HIDL_IFACE("2.0")
 
@@ -172,17 +173,27 @@ initable_init (GInitable     *initable,
                GCancellable  *cancellable,
                GError       **error)
 {
+  static const gchar *slots[] = {
+    BINDER_LIGHT_HIDL_2_0_IFACE "/" BINDER_LIGHT_HIDL_SLOT_LIBDROID,
+    BINDER_LIGHT_HIDL_2_0_IFACE "/" BINDER_LIGHT_HIDL_SLOT_DEFAULT,
+  };
   DroidLedsBackendHidl *self = DROID_LEDS_BACKEND_HIDL (initable);
   gboolean success;
 
   g_debug ("Initializing droid leds hidl");
 
-  success = binder_init (BINDER_LIGHT_DEFAULT_HIDL_DEVICE,
-                         BINDER_LIGHT_HIDL_2_0_IFACE,
-                         (BINDER_LIGHT_HIDL_2_0_IFACE "/" BINDER_LIGHT_HIDL_SLOT),
-                         &self->service_manager,
-                         &self->remote,
-                         &self->client);
+  for (int i=0; i < 2; i++)
+    {
+      success = binder_init (BINDER_LIGHT_DEFAULT_HIDL_DEVICE,
+                             BINDER_LIGHT_HIDL_2_0_IFACE,
+                             slots[i],
+                             &self->service_manager,
+                             &self->remote,
+                             &self->client);
+
+      if (success)
+        break;
+    }
 
   if (!success) {
     g_set_error (error,
