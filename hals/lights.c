@@ -159,7 +159,7 @@ droid_hal_lights_probe (DroidHalLights *self)
   const gchar *backlight_type;
   gchar *path_to_check = NULL;
 
-  if (droid_utils_can_write_to (BRIGHTNESS_PATH (FALLBACK_BACKLIGHT_PATH)))
+  if (droid_utils_file_exists (BRIGHTNESS_PATH (FALLBACK_BACKLIGHT_PATH)))
     {
       self->backlight_device = droid_leds_udev_new_device (g_udev_client_query_by_sysfs_path (self->udev,
         FALLBACK_BACKLIGHT_PATH));
@@ -180,7 +180,7 @@ droid_hal_lights_probe (DroidHalLights *self)
             {
               path_to_check = g_build_filename (g_udev_device_get_sysfs_path (item->data),
                 "brightness", NULL);
-              if (droid_utils_can_write_to (path_to_check))
+              if (droid_utils_file_exists (path_to_check))
                   self->backlight_device = droid_leds_udev_new_device (G_UDEV_DEVICE (g_object_ref (item->data)));
               g_free (path_to_check);
               if (self->backlight_device)
@@ -190,15 +190,15 @@ droid_hal_lights_probe (DroidHalLights *self)
     }
 
 
-  if (droid_utils_can_write_to (BRIGHTNESS_PATH (FALLBACK_RED_PATH)))
+  if (droid_utils_file_exists (BRIGHTNESS_PATH (FALLBACK_RED_PATH)))
       self->red_device = droid_leds_udev_new_device (g_udev_client_query_by_sysfs_path (self->udev,
         FALLBACK_RED_PATH));
 
-  if (droid_utils_can_write_to (BRIGHTNESS_PATH (FALLBACK_GREEN_PATH)))
+  if (droid_utils_file_exists (BRIGHTNESS_PATH (FALLBACK_GREEN_PATH)))
       self->green_device = droid_leds_udev_new_device (g_udev_client_query_by_sysfs_path (self->udev,
         FALLBACK_GREEN_PATH));
 
-  if (droid_utils_can_write_to (BRIGHTNESS_PATH (FALLBACK_BLUE_PATH)))
+  if (droid_utils_file_exists (BRIGHTNESS_PATH (FALLBACK_BLUE_PATH)))
       self->blue_device = droid_leds_udev_new_device (g_udev_client_query_by_sysfs_path (self->udev,
         FALLBACK_BLUE_PATH));
 }
