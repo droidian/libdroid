@@ -1,4 +1,4 @@
-/* leds-backend.h
+/* leds-objects.h
  *
  * Copyright 2024 Eugenio "g7" Paolantonio <me@medesimo.eu>
  *
@@ -45,40 +45,44 @@
 
 #pragma once
 
-#include <stdint.h>
-#include <glib-object.h>
+#include <glib.h>
 
-#include <libdroid-shared/leds-objects.h>
+#define ALIGNED(x) __attribute__ ((aligned(x)))
 
-G_BEGIN_DECLS
+/* Light types */
+typedef enum light_type {
+  LIGHT_TYPE_BACKLIGHT = 0,
+  LIGHT_TYPE_KEYBOARD = 1,
+  LIGHT_TYPE_BUTTONS = 2,
+  LIGHT_TYPE_BATTERY = 3,
+  LIGHT_TYPE_NOTIFICATIONS = 4,
+  LIGHT_TYPE_ATTENTION = 5,
+  LIGHT_TYPE_BLUETOOTH = 6,
+  LIGHT_TYPE_WIFI = 7,
+  LIGHT_TYPE_COUNT = 8,
+} LightType;
 
-#define DROID_TYPE_LEDS_BACKEND droid_leds_backend_get_type()
-G_DECLARE_INTERFACE (DroidLedsBackend, droid_leds_backend, DROID, LEDS_BACKEND, GObject)
+/* Flash types */
+typedef enum flash_type {
+  FLASH_TYPE_NONE = 0,
+  FLASH_TYPE_TIMED = 1,
+  FLASH_TYPE_HARDWARE = 2,
+} FlashType;
 
-struct _DroidLedsBackendInterface
-{
-  GTypeInterface parent_iface;
+/* Brightness types */
+typedef enum brightness_type {
+  BRIGHTNESS_MODE_USER = 0,
+  BRIGHTNESS_MODE_SENSOR = 1,
+  BRIGHTNESS_MODE_LOW_PERSISTENCE = 2,
+} BrightnessType;
 
-  gboolean (*is_supported) (DroidLedsBackend *self,
-                            LightType         light_type);
-  gboolean (*set)          (DroidLedsBackend *self,
-                            uint32_t           color,
-                            LightType         light_type,
-                            FlashType         flash_type,
-                            BrightnessType    brightness_type,
-                            int32_t           flash_on_ms,
-                            int32_t           flash_off_ms);
-};
-
-gboolean droid_leds_backend_is_supported (DroidLedsBackend *self,
-                                          LightType         light_type);
-gboolean droid_leds_backend_set          (DroidLedsBackend *self,
-                                          uint32_t           color,
-                                          LightType         light_type,
-                                          FlashType         flash_type,
-                                          BrightnessType    brightness_type,
-                                          int32_t           flash_on_ms,
-                                          int32_t           flash_off_ms);
-
-G_END_DECLS
+/* The light state */
+typedef struct light_state {
+  gint32 color;
+  FlashType flashMode ALIGNED(4);
+  gint32 flashOnMs;
+  gint32 flashOffMs;
+  BrightnessType brightnessMode ALIGNED(4);
+} LightState;
+G_STATIC_ASSERT(sizeof(LightState) == 20);
 
