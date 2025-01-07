@@ -41,6 +41,16 @@
 #include "utils.h"
 
 gboolean
+droid_utils_file_exists (const gchar *path)
+{
+  gboolean result =  g_file_test (path, G_FILE_TEST_EXISTS);
+
+  g_debug ("file_exists: %s: %i", path, result);
+
+  return result;
+}
+
+gboolean
 droid_utils_can_write_to (const gchar *path)
 {
   g_autoptr (GFile) file = g_file_new_for_path (path);

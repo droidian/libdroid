@@ -40,6 +40,7 @@
 
 #include <gio/gio.h>
 
+gboolean droid_utils_file_exists   (const gchar *path);
 gboolean droid_utils_can_write_to  (const gchar *path);
 gboolean droid_utils_write_to_file (const gchar *path,
                                     gchar       *content);
