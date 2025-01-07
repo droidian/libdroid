@@ -164,11 +164,11 @@ droid_leds_create_backend (void)
   g_autoptr (GError) error = NULL;
   DroidLedsBackend *backend;
 
-  backend = (DroidLedsBackend *) droid_leds_backend_aidl_new (&error);
+  backend = (DroidLedsBackend *) droid_leds_backend_hidl_new (&error);
 
   if (!backend)
     {
-      backend = (DroidLedsBackend *) droid_leds_backend_hidl_new (&error);
+      backend = (DroidLedsBackend *) droid_leds_backend_aidl_new (&error);
 
       if (!backend)
         return NULL;
