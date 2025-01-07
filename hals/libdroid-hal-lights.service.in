@@ -8,6 +8,7 @@ Type=simple
 ExecStart=@PREFIX@/bin/libdroid-hal-lights
 User=system
 Group=system
+Restart=on-abnormal
 
 [Install]
 WantedBy=multi-user.target
