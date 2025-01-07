@@ -1,0 +1,2 @@
+/usr/lib/systemd/system/libdroid-hal-lights.service
+/usr/bin/libdroid-hal-lights

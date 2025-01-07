@@ -8,6 +8,8 @@ Build-Depends: debhelper-compat (= 13),
                libgirepository-2.0-dev,
                libgirepository-1.0-dev,
                libgbinder-dev,
+               libgudev-1.0-dev,
+               systemd-dev,
                gir1.2-glib-2.0-dev,
 Standards-Version: 4.6.2
 Homepage: https://github.com/droidian/libdroid.git
@@ -56,6 +58,20 @@ Description: Library to ease interaction with Android HALs - tools
  use binderized Android HALs.
  .
  This package provides example tools using libdroid.
+
+Package: libdroid-hal-lights
+Architecture: any
+Section: misc
+Multi-Arch: foreign
+Depends: libdroid-hal (= ${binary:Version}),
+         ${misc:Depends},
+         ${shlibs:Depends},
+Description: Android Lights HAL implementation
+ libdroid is a library that provides some helpers to
+ use binderized Android HALs.
+ .
+ This package provides an Android Lights HAL implementation using
+ libdroid-hal.
 
 Package: libdroid-dev
 Architecture: any

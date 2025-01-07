@@ -1,0 +1,13 @@
+[Unit]
+Description=libdroid lights HAL
+After=lxc@android.service
+Requires=lxc@android.service
+
+[Service]
+Type=simple
+ExecStart=@PREFIX@/bin/libdroid-hal-lights
+User=system
+Group=system
+
+[Install]
+WantedBy=multi-user.target
