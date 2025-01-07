@@ -1,0 +1,7 @@
+LIBDROIDHAL {
+	global:
+		droid_hal_*;
+		droid_utils_*;
+	local:
+		*;
+};

@@ -23,6 +23,17 @@ Description: Library to ease interaction with Android HALs
  libdroid is a library that provides some helpers to
  use binderized Android HALs.
 
+Package: libdroid-hal
+Architecture: any
+Multi-Arch: same
+Depends: ${misc:Depends},
+         ${shlibs:Depends},
+Description: Library to ease interaction with Android HALs - HAL helper library
+ libdroid is a library that provides some helpers to
+ use binderized Android HALs.
+ .
+ This package provides an helper library to build Android HALs.
+
 Package: libdroid-common
 Architecture: all
 Multi-Arch: foreign
