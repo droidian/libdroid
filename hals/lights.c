@@ -245,25 +245,25 @@ droid_hal_lights_set (DroidHalLights *backend,
 
       g_debug ("notification: got change request: r %d g %d b %d", red, green, blue);
 
-      if (self->red_device != NULL)
+      if (self->red_device != NULL &&
+          udev_write_int (self->red_device, "brightness", TO_SYSFS_VALUE (red, self->red_device->max)) &&
+          udev_blink (self->red_device, (red > 0)))
         {
-          udev_write_int (self->red_device, "brightness", TO_SYSFS_VALUE (red, self->red_device->max));
-          if (udev_blink (self->red_device, (red > 0)))
-              result = TRUE;
+          result = TRUE;
         }
 
-      if (self->green_device != NULL)
+      if (self->green_device != NULL &&
+          udev_write_int (self->green_device, "brightness", TO_SYSFS_VALUE (green, self->green_device->max)) &&
+          udev_blink (self->green_device, (green > 0)))
         {
-          udev_write_int (self->green_device, "brightness", TO_SYSFS_VALUE (green, self->green_device->max));
-          if (udev_blink (self->green_device, (green > 0)))
-              result = TRUE;
+          result = TRUE;
         }
 
-      if (self->blue_device != NULL)
+      if (self->blue_device != NULL &&
+          udev_write_int (self->blue_device, "brightness", TO_SYSFS_VALUE (blue, self->blue_device->max)) &&
+          udev_blink (self->blue_device, (blue > 0)))
         {
-          udev_write_int (self->blue_device, "brightness", TO_SYSFS_VALUE (blue, self->blue_device->max));
-          if (udev_blink (self->blue_device, (blue > 0)))
-              result = TRUE;
+          result = TRUE;
         }
     }
 
