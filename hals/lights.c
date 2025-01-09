@@ -54,7 +54,6 @@ G_DECLARE_FINAL_TYPE (DroidHalLights, droid_hal_lights, DROID, HAL_LIGHTS, GObje
 
 #define BINDER_LIGHT_HIDL_2_0_IFACE BINDER_LIGHT_HIDL_IFACE("2.0")
 
-#define FALLBACK_BACKLIGHT_PATH "/sys/class/leds/lcd-backlight"
 #define FALLBACK_RED_PATH       "/sys/class/leds/red"
 #define FALLBACK_GREEN_PATH     "/sys/class/leds/green"
 #define FALLBACK_BLUE_PATH      "/sys/class/leds/blue"
@@ -154,17 +153,27 @@ droid_leds_udev_new_device (GUdevDevice *device)
 static void
 droid_hal_lights_probe (DroidHalLights *self)
 {
+  static const gchar *known_backlight_paths[] = {
+    "/sys/class/leds/lcd-backlight",
+    "/sys/class/backlight/panel0-backlight",
+  };
   g_autolist(GUdevDevice) backlight_list = NULL;
   GList *item;
   const gchar *backlight_type;
   gchar *path_to_check = NULL;
 
-  if (droid_utils_file_exists (BRIGHTNESS_PATH (FALLBACK_BACKLIGHT_PATH)))
+  for (int i=0; i < 2; i++)
     {
-      self->backlight_device = droid_leds_udev_new_device (g_udev_client_query_by_sysfs_path (self->udev,
-        FALLBACK_BACKLIGHT_PATH));
+      path_to_check = g_build_filename (known_backlight_paths[i], "brightness", NULL);
+      if (droid_utils_file_exists (path_to_check))
+          self->backlight_device = droid_leds_udev_new_device (g_udev_client_query_by_sysfs_path (self->udev,
+            known_backlight_paths[i]));
+      g_free (path_to_check);
+      if (self->backlight_device)
+          break;
     }
-  else
+
+  if (!self->backlight_device)
     {
       /* Try using udev */
       backlight_list = g_udev_client_query_by_subsystem (self->udev, "backlight");
