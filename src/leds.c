@@ -126,7 +126,7 @@ droid_leds_set_notification (DroidLeds *self,
     return FALSE;
 
   return droid_leds_backend_set (self->backend, color, LIGHT_TYPE_NOTIFICATIONS,
-    FLASH_TYPE_NONE, BRIGHTNESS_MODE_USER, flash_on_ms, flash_off_ms);
+    FLASH_TYPE_TIMED, BRIGHTNESS_MODE_USER, flash_on_ms, flash_off_ms);
 }
 
 
