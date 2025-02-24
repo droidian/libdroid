@@ -1,6 +1,6 @@
-/* libdroid.h
+/* vibra-backend.c
  *
- * Copyright 2024 Eugenio "g7" Paolantonio <me@medesimo.eu>
+ * Copyright 2025 Eugenio "g7" Paolantonio <me@medesimo.eu>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -33,19 +33,51 @@
  * are those of the authors and should not be interpreted as representing
  * any official policies, either expressed or implied.
  *
+ * This file is based on the original integration in Droidian's feedbackd
+ * variant, fbd-droid-vibra-backend.c @ 8e1245ce25d48cd4107754d13c6c16375f550622
+ *
+ * Copyright 2022 Eugenio "g7" Paolantonio
+ *
+ * The authors gave written permission for the license change for libdroid.
+ *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#pragma once
+#define G_LOG_DOMAIN "droid-vibra-backend"
 
-#include <glib.h>
+#include "vibra-backend.h"
 
-G_BEGIN_DECLS
+G_DEFINE_INTERFACE (DroidVibraBackend, droid_vibra_backend, G_TYPE_OBJECT)
 
-#define LIBDROID_INSIDE
-# include <libdroid/libdroid-version.h>
-# include <libdroid/leds.h>
-# include <libdroid/vibra.h>
-#undef LIBDROID_INSIDE
+static void
+droid_vibra_backend_default_init (DroidVibraBackendInterface *iface)
+{
+    /* Nothing yet */
+}
 
-G_END_DECLS
+
+gboolean
+droid_vibra_backend_on (DroidVibraBackend *self,
+                        int32_t            duration)
+{
+  DroidVibraBackendInterface *iface;
+
+  g_return_val_if_fail (DROID_IS_VIBRA_BACKEND (self), FALSE);
+
+  iface = DROID_VIBRA_BACKEND_GET_IFACE (self);
+  g_return_val_if_fail (iface->on != NULL, FALSE);
+  return iface->on (self, duration);
+}
+
+
+gboolean
+droid_vibra_backend_off (DroidVibraBackend *self)
+{
+  DroidVibraBackendInterface *iface;
+
+  g_return_val_if_fail (DROID_IS_VIBRA_BACKEND (self), FALSE);
+
+  iface = DROID_VIBRA_BACKEND_GET_IFACE (self);
+  g_return_val_if_fail (iface->off != NULL, FALSE);
+  return iface->off (self);
+}

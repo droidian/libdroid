@@ -1,6 +1,6 @@
-/* libdroid.h
+/* vibra-backend.h
  *
- * Copyright 2024 Eugenio "g7" Paolantonio <me@medesimo.eu>
+ * Copyright 2025 Eugenio "g7" Paolantonio <me@medesimo.eu>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -33,19 +33,39 @@
  * are those of the authors and should not be interpreted as representing
  * any official policies, either expressed or implied.
  *
+ * This file is based on the original integration in Droidian's feedbackd
+ * variant, fbd-droid-vibra-backend.h @ 8e1245ce25d48cd4107754d13c6c16375f550622
+ *
+ * Copyright 2022 Eugenio "g7" Paolantonio
+ *
+ * The authors gave written permission for the license change for libdroid.
+ *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
 #pragma once
 
-#include <glib.h>
+#include <stdint.h>
+#include <glib-object.h>
 
 G_BEGIN_DECLS
 
-#define LIBDROID_INSIDE
-# include <libdroid/libdroid-version.h>
-# include <libdroid/leds.h>
-# include <libdroid/vibra.h>
-#undef LIBDROID_INSIDE
+#define DROID_TYPE_VIBRA_BACKEND droid_vibra_backend_get_type()
+G_DECLARE_INTERFACE (DroidVibraBackend, droid_vibra_backend, DROID, VIBRA_BACKEND, GObject)
+
+struct _DroidVibraBackendInterface
+{
+  GTypeInterface parent_iface;
+
+  gboolean (*on)  (DroidVibraBackend *self,
+                   int32_t            duration);
+  gboolean (*off) (DroidVibraBackend *self);
+};
+
+gboolean droid_vibra_backend_on  (DroidVibraBackend *self,
+                                  int32_t            duration);
+
+gboolean droid_vibra_backend_off (DroidVibraBackend *self);
 
 G_END_DECLS
+

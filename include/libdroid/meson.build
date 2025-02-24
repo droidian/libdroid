@@ -1,5 +1,6 @@
 libdroid_headers = [
   'leds.h',
+  'vibra.h',
   'libdroid.h',
 ]
 

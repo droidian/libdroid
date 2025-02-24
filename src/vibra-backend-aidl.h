@@ -1,6 +1,6 @@
-/* libdroid.h
+/* vibra-backend-aidl.h
  *
- * Copyright 2024 Eugenio "g7" Paolantonio <me@medesimo.eu>
+ * Copyright 2025 Eugenio "g7" Paolantonio <me@medesimo.eu>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -33,19 +33,28 @@
  * are those of the authors and should not be interpreted as representing
  * any official policies, either expressed or implied.
  *
+ * This file is based on the original integration in Droidian's feedbackd
+ * variant, fbd-droid-vibra-backend-aidl.h @ 6a38c0555d07d5da7ad64c16c663dc416191b3c5
+ *
+ * Copyright 2022 Eugenio "g7" Paolantonio
+ *
+ * The authors gave written permission for the license change for libdroid.
+ *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
 #pragma once
 
-#include <glib.h>
+#include <glib-object.h>
+#include <stdint.h>
+
+#include "vibra-backend.h"
 
 G_BEGIN_DECLS
 
-#define LIBDROID_INSIDE
-# include <libdroid/libdroid-version.h>
-# include <libdroid/leds.h>
-# include <libdroid/vibra.h>
-#undef LIBDROID_INSIDE
+#define DROID_TYPE_VIBRA_BACKEND_AIDL droid_vibra_backend_aidl_get_type ()
+G_DECLARE_FINAL_TYPE (DroidVibraBackendAidl, droid_vibra_backend_aidl, DROID, VIBRA_BACKEND_AIDL, GObject)
+
+DroidVibraBackendAidl *droid_vibra_backend_aidl_new (GError **error);
 
 G_END_DECLS

@@ -1,6 +1,6 @@
-/* libdroid.h
+/* vibra.h
  *
- * Copyright 2024 Eugenio "g7" Paolantonio <me@medesimo.eu>
+ * Copyright 2025 Eugenio "g7" Paolantonio <me@medesimo.eu>
  *
  * You may use this file under the terms of the BSD license as follows:
  *
@@ -38,14 +38,18 @@
 
 #pragma once
 
-#include <glib.h>
+#include <glib-object.h>
+#include <stdint.h>
 
 G_BEGIN_DECLS
 
-#define LIBDROID_INSIDE
-# include <libdroid/libdroid-version.h>
-# include <libdroid/leds.h>
-# include <libdroid/vibra.h>
-#undef LIBDROID_INSIDE
+#define DROID_TYPE_VIBRA droid_vibra_get_type ()
+G_DECLARE_FINAL_TYPE (DroidVibra, droid_vibra, DROID, VIBRA, GObject)
+
+
+DroidVibra *droid_vibra_new (void);
+gboolean    droid_vibra_on   (DroidVibra *self,
+                              int32_t     duration);
+gboolean    droid_vibra_off  (DroidVibra *self);
 
 G_END_DECLS

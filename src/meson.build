@@ -7,6 +7,10 @@ libdroid_sources = [
   'leds-backend.c',
   'leds-backend-aidl.c',
   'leds-backend-hidl.c',
+  'vibra.c',
+  'vibra-backend.c',
+  'vibra-backend-aidl.c',
+  'vibra-backend-hidl.c',
   'settings.c',
 ]
 
