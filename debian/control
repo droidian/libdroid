@@ -15,7 +15,7 @@ Standards-Version: 4.6.2
 Homepage: https://github.com/droidian/libdroid.git
 Rules-Requires-Root: no
 
-Package: libdroid-0-0
+Package: libdroid-0-1
 Architecture: any
 Multi-Arch: same
 Depends: libdroid-common (= ${binary:Version}),
@@ -50,7 +50,7 @@ Package: libdroid-tools
 Architecture: any
 Section: libdevel
 Multi-Arch: same
-Depends: libdroid-0-0 (= ${binary:Version}),
+Depends: libdroid-0-1 (= ${binary:Version}),
          ${misc:Depends},
          ${shlibs:Depends},
 Description: Library to ease interaction with Android HALs - tools
@@ -77,7 +77,7 @@ Package: libdroid-dev
 Architecture: any
 Section: libdevel
 Multi-Arch: same
-Depends: libdroid-0-0 (= ${binary:Version}),
+Depends: libdroid-0-1 (= ${binary:Version}),
          gir1.2-droid-0 (= ${binary:Version}),
          libglib2.0-dev,
          libgbinder-dev,
@@ -92,7 +92,7 @@ Package: gir1.2-droid-0
 Architecture: any
 Section: introspection
 Multi-Arch: same
-Depends: libdroid-0-0 (= ${binary:Version}),
+Depends: libdroid-0-1 (= ${binary:Version}),
          ${misc:Depends},
          ${gir:Depends},
 Description: Library to ease interaction with Android HALs - gobject introspection data
