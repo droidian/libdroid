@@ -47,7 +47,7 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (DroidVibra, droid_vibra, DROID, VIBRA, GObject)
 
 
-DroidVibra *droid_vibra_new (void);
+DroidVibra *droid_vibra_new  (GError **error);
 gboolean    droid_vibra_on   (DroidVibra *self,
                               int32_t     duration);
 gboolean    droid_vibra_off  (DroidVibra *self);

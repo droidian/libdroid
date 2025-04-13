@@ -75,8 +75,10 @@ struct _DroidLeds
   gboolean          notifications_supported;
 };
 
-G_DEFINE_FINAL_TYPE (DroidLeds, droid_leds, G_TYPE_OBJECT)
+static void initable_interface_init (GInitableIface *iface);
 
+G_DEFINE_TYPE_WITH_CODE (DroidLeds, droid_leds, G_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE, initable_interface_init))
 
 gboolean
 droid_leds_set_backlight (DroidLeds *self,
@@ -177,17 +179,14 @@ droid_leds_create_backend (void)
   return backend;
 }
 
-static void
-droid_leds_constructed (GObject *obj)
+static gboolean
+initable_init (GInitable     *initable,
+               GCancellable  *cancellable,
+               GError       **error)
 {
-  DroidLeds *self = DROID_LEDS (obj);
+  DroidLeds *self = DROID_LEDS (initable);
 
-  G_OBJECT_CLASS (droid_leds_parent_class)->constructed (obj);
-
-  self->settings = droid_settings_get_default ();
-
-  self->backlight_max_alternate = g_settings_get_uint (self->settings,
-    LIBDROID_LEDS_BACKLIGHT_MAX_ALTERNATE_KEY);
+  g_debug ("Initializing libdroid leds");
 
   self->backend = droid_leds_create_backend ();
 
@@ -203,6 +202,29 @@ droid_leds_constructed (GObject *obj)
       self->backlight_supported = FALSE;
       self->notifications_supported = FALSE;
     }
+
+  if (!self->backlight_supported && !self->notifications_supported)
+    {
+      g_set_error (error,
+                   G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "No lights available");
+      return FALSE;
+  }
+
+  return TRUE;
+}
+
+static void
+droid_leds_constructed (GObject *obj)
+{
+  DroidLeds *self = DROID_LEDS (obj);
+
+  G_OBJECT_CLASS (droid_leds_parent_class)->constructed (obj);
+
+  self->settings = droid_settings_get_default ();
+
+  self->backlight_max_alternate = g_settings_get_uint (self->settings,
+    LIBDROID_LEDS_BACKLIGHT_MAX_ALTERNATE_KEY);
 }
 
 
@@ -217,6 +239,13 @@ droid_leds_dispose (GObject *obj)
   g_clear_object (&self->settings);
 
   G_OBJECT_CLASS (droid_leds_parent_class)->dispose (obj);
+}
+
+
+static void
+initable_interface_init (GInitableIface *iface)
+{
+  iface->init = initable_init;
 }
 
 
@@ -237,8 +266,11 @@ droid_leds_init (DroidLeds *self)
 
 
 DroidLeds *
-droid_leds_new (void)
+droid_leds_new (GError **error)
 {
   return DROID_LEDS (
-    g_object_new (DROID_TYPE_LEDS, NULL));
+    g_initable_new (DROID_TYPE_LEDS,
+                    NULL,
+                    error,
+                    NULL));
 }

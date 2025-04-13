@@ -66,7 +66,10 @@ struct _DroidVibra
   DroidVibraBackend *backend;
 };
 
-G_DEFINE_FINAL_TYPE (DroidVibra, droid_vibra, G_TYPE_OBJECT)
+static void initable_interface_init (GInitableIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (DroidVibra, droid_vibra, G_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE, initable_interface_init))
 
 
 gboolean
@@ -108,14 +111,34 @@ droid_vibra_create_backend (void)
   return backend;
 }
 
+
+static gboolean
+initable_init (GInitable     *initable,
+               GCancellable  *cancellable,
+               GError       **error)
+{
+  DroidVibra *self = DROID_VIBRA (initable);
+
+  g_debug ("Initializing libdroid vibra");
+
+  self->backend = droid_vibra_create_backend ();
+
+  if (!self->backend)
+    {
+      g_set_error (error,
+                   G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "No vibra available");
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+
 static void
 droid_vibra_constructed (GObject *obj)
 {
-  DroidVibra *self = DROID_VIBRA (obj);
-
   G_OBJECT_CLASS (droid_vibra_parent_class)->constructed (obj);
-
-  self->backend = droid_vibra_create_backend ();
 }
 
 
@@ -129,6 +152,13 @@ droid_vibra_dispose (GObject *obj)
   g_clear_object (&self->backend);
 
   G_OBJECT_CLASS (droid_vibra_parent_class)->dispose (obj);
+}
+
+
+static void
+initable_interface_init (GInitableIface *iface)
+{
+  iface->init = initable_init;
 }
 
 
@@ -149,8 +179,11 @@ droid_vibra_init (DroidVibra *self)
 
 
 DroidVibra *
-droid_vibra_new (void)
+droid_vibra_new (GError **error)
 {
   return DROID_VIBRA (
-    g_object_new (DROID_TYPE_VIBRA, NULL));
+    g_initable_new (DROID_TYPE_VIBRA,
+                    NULL,
+                    error,
+                    NULL));
 }

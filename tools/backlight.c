@@ -81,7 +81,12 @@ main (int argc, char** argv)
       return EXIT_FAILURE;
     }
 
-  leds = droid_leds_new ();
+  leds = droid_leds_new (&err);
+  if (err != NULL)
+    {
+      g_error ("Unable to init DroidLeds: %s", err->message);
+      return EXIT_FAILURE;
+    }
 
   if (info)
     {

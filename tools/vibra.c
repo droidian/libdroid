@@ -66,7 +66,12 @@ main (int argc, char** argv)
       return EXIT_FAILURE;
     }
 
-  vibra = droid_vibra_new ();
+  vibra = droid_vibra_new (&err);
+  if (err != NULL)
+    {
+      g_error ("Unable to initialize DroidVibra: %s", err->message);
+      return EXIT_FAILURE;
+    }
 
   g_message ("Vibrating for %d ms...", duration);
 

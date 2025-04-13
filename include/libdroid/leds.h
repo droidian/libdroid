@@ -51,7 +51,7 @@ typedef enum _DroidLedsKind {
   DROID_LEDS_KIND_NOTIFICATION,
 } DroidLedsKind;
 
-DroidLeds *droid_leds_new                (void);
+DroidLeds *droid_leds_new                (GError **error);
 gboolean   droid_leds_set_backlight      (DroidLeds *self,
                                           guint      level,
                                           gboolean   save);
