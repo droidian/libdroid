@@ -1,5 +1,5 @@
 api_version = '0'
-soversion = '0'
+soversion = '1'
 
 libdroid_sources = [
   'binder.c',

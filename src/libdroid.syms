@@ -1,4 +1,4 @@
-LIBDROID_0_0 {
+LIBDROID_0_1 {
 	global:
 		droid_*;
 	local:
