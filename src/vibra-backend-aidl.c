@@ -60,7 +60,8 @@
 
 #define BINDER_VIBRATOR_AIDL_IFACE "android.hardware.vibrator.IVibrator"
 #define BINDER_VIBRATOR_AIDL_CALLBACK_IFACE "android.hardware.vibrator.IVibratorCallback"
-#define BINDER_VIBRATOR_AIDL_SLOT "default"
+#define BINDER_VIBRATOR_AIDL_SLOT_DEFAULT "default"
+#define BINDER_VIBRATOR_AIDL_SLOT_VIBRATORFEATURE "vibratorfeature"
 
 /* Methods */
 enum
@@ -161,17 +162,26 @@ initable_init (GInitable     *initable,
                GCancellable  *cancellable,
                GError       **error)
 {
+  static const gchar *slots[] = {
+    BINDER_VIBRATOR_AIDL_IFACE "/" BINDER_VIBRATOR_AIDL_SLOT_VIBRATORFEATURE,
+    BINDER_VIBRATOR_AIDL_IFACE "/" BINDER_VIBRATOR_AIDL_SLOT_DEFAULT,
+  };
   DroidVibraBackendAidl *self = DROID_VIBRA_BACKEND_AIDL (initable);
   gboolean success;
 
   g_debug ("Initializing droid vibra aidl");
 
-  success = binder_init (BINDER_VIBRATOR_DEFAULT_AIDL_DEVICE,
-                         BINDER_VIBRATOR_AIDL_IFACE,
-                         (BINDER_VIBRATOR_AIDL_IFACE "/" BINDER_VIBRATOR_AIDL_SLOT),
-                         &self->service_manager,
-                         &self->remote,
-                         &self->client);
+  for (int i=0; i < 2; i++)
+    {
+      success = binder_init (BINDER_VIBRATOR_DEFAULT_AIDL_DEVICE,
+                             BINDER_VIBRATOR_AIDL_IFACE,
+                             slots[i],
+                             &self->service_manager,
+                             &self->remote,
+                             &self->client);
+      if (success)
+        break;
+    }
 
   if (!success) {
     g_set_error (error,
